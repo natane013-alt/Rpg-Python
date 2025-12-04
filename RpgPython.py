@@ -1,7 +1,6 @@
 # RPG com nível, classes, inventário e mapa (corrigido e compatível com ambientes não interativos)
 
 import random
-import sys
 
 # --- Configurações para execução não interativa ---
 # Se o ambiente não suportar input(), o jogo usará valores padrão para executar sem travar.
