@@ -29,6 +29,11 @@ player = {
     "inventory": []
 }
 
+# --- Funções do jogador ---
+def getName():
+    return player["name"] #retorna o nome do jogador
+
+
 # --- Inimigos ---
 enemies = [
     {"name": "Goblin", "hp": 12, "attack": (2, 5), "xp": 10},
@@ -96,7 +101,7 @@ player["class"] = classe
 player["hp"] = classes[classe]["hp"]
 player["attack"] = classes[classe]["attack"]
 
-safe_print(f"\nVocê escolheu: {classe.title()} - HP: {player['hp']} | Ataque: {player['attack']}")
+safe_print(f"\n{getName()} escolheu: {classe.title()} - HP: {player['hp']} | Ataque: {player['attack']}")
 
 
 # --- Função de level up ---
@@ -108,27 +113,27 @@ def level_up():
         player["xp_next"] += 20
         player["hp"] += 5
         leveled = True
-        safe_print(f"\n✨ LEVEL UP! Agora você é nível {player['level']}! HP aumentado! ✨")
+        safe_print(f"\n✨ LEVEL UP! Agora {getName()} é nível {player['level']}! HP aumentado! ✨")
     return leveled
 
 
 # --- Loop principal ---
 while True:
     local = random.choice(mapa)
-    safe_print(f"\nVocê entrou em: {local}")
+    safe_print(f"\n{getName()} entrou em: {local}")
 
     # Chance de achar item
     if random.random() < 0.3:
         item = random.choice(itens_disponiveis)
         player["inventory"].append(item)
-        safe_print(f"📦 Você encontrou um item: {item}!")
+        safe_print(f"📦 {getName()} encontrou um item: {item}!")
 
     # Encontro com inimigo
     enemy = random.choice(enemies).copy()
     safe_print(f"\n⚔️ Um {enemy['name']} apareceu!")
 
     # Faça uma cópia do HP do jogador para permitir mortes e continuar testes
-    # (em jogos reais você manteria o HP real)
+    # (em jogos reais {getName()} manteria o HP real)
     while enemy["hp"] > 0 and player["hp"] > 0:
         safe_print(f"\nSeu HP: {player['hp']} | Nível: {player['level']} | XP: {player['xp']}/{player['xp_next']}")
         safe_print(f"Inventário: {player['inventory']}")
@@ -139,28 +144,28 @@ while True:
         if action == "1":
             dano = random.randint(*player["attack"])
             enemy["hp"] -= dano
-            safe_print(f"Você causou {dano} de dano! HP do inimigo: {max(enemy['hp'], 0)}")
+            safe_print(f"{getName()} causou {dano} de dano! HP do inimigo: {max(enemy['hp'], 0)}")
 
             if enemy["hp"] <= 0:
-                safe_print(f"\nVocê derrotou o {enemy['name']}! Ganhou {enemy['xp']} XP.")
+                safe_print(f"\n{getName()} derrotou o {enemy['name']}! Ganhou {enemy['xp']} XP.")
                 player["xp"] += enemy["xp"]
                 level_up()
                 break
 
             dano_inimigo = random.randint(*enemy["attack"])
             player["hp"] -= dano_inimigo
-            safe_print(f"O {enemy['name']} atacou! Você perdeu {dano_inimigo}.")
+            safe_print(f"O {enemy['name']} atacou! {getName()} perdeu {dano_inimigo} de HP.")
 
         elif action == "2":
             if "Poção de Cura" in player["inventory"]:
                 player["hp"] += 10
                 player["inventory"].remove("Poção de Cura")
-                safe_print("Você usou uma Poção de Cura! +10 HP.")
+                safe_print(f"{getName()} usou uma Poção de Cura! +10 HP.")
             else:
-                safe_print("Você não tem itens utilizáveis!")
+                safe_print(f"{getName()} não tem itens utilizáveis!")
 
         elif action == "3":
-            safe_print("Você fugiu!")
+            safe_print(f"{getName()} fugiu!")
             break
 
         else:
@@ -168,19 +173,19 @@ while True:
             # Comportamento de fallback: atacar
             dano = random.randint(*player["attack"])
             enemy["hp"] -= dano
-            safe_print(f"Você causou {dano} de dano! HP do inimigo: {max(enemy['hp'], 0)}")
+            safe_print(f"{getName()} causou {dano} de dano! HP do inimigo: {max(enemy['hp'], 0)}")
             if enemy["hp"] <= 0:
-                safe_print(f"\nVocê derrotou o {enemy['name']}! Ganhou {enemy['xp']} XP.")
+                safe_print(f"\n{getName()} derrotou o {enemy['name']}! Ganhou {enemy['xp']} XP.")
                 player["xp"] += enemy["xp"]
                 level_up()
                 break
 
             dano_inimigo = random.randint(*enemy["attack"])
             player["hp"] -= dano_inimigo
-            safe_print(f"O {enemy['name']} atacou! Você perdeu {dano_inimigo}.")
+            safe_print(f"O {enemy['name']} atacou! {getName()} perdeu {dano_inimigo}.")
 
     if player["hp"] <= 0:
-        safe_print("\n💀 Você morreu! Fim do jogo.")
+        safe_print(f"\n💀 {getName()} morreu! Fim do jogo.")
         break
 
     continuar = get_input("\nDeseja viajar para outro local? (s/n): ", NON_INTERACTIVE_CONTINUE).strip().lower()
